@@ -1,4 +1,4 @@
-name: CI/CD workflow for buildblock-web
+name: docker build workflow for IaC
 
 on:
   workflow_dispatch:
@@ -20,14 +20,14 @@ jobs:
         uses: docker/setup-qemu-action@v3
       - name: setup docker buildx config
         uses: docker/setup-buildx-action@v3
-      - name: Login to Amazon ECR
+      - name: Login to Dockerhub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push Prod container to ECR Registry
+      - name: Build and push Prod container to Dockerhub Registry
         env:
-          DOCKER_REPO_URI: sysnet4admin/${{ github.event.inputs.docker_project }}
+          DOCKER_REPO_URI: sungminl/${{ github.event.inputs.docker_project }}
         uses: docker/build-push-action@v5
         with:
           context: Docker/Dockerfiles/${{ github.event.inputs.docker_project }}/.
